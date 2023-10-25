@@ -36,7 +36,7 @@ type IAP_STATUS = {
   getAvailablePurchases: () => Promise<void>;
   getPurchaseHistory: () => Promise<void>;
   getProducts: ({skus}: {skus: string[]}) => Promise<void>;
-  getSubscriptions: ({skus}: {skus: string[]}) => Promise<void>;
+  getSubscriptions: ({skus,onResponse}: {skus: string[],onResponse:any}) => Promise<void>;
   requestPurchase: typeof iapRequestPurchase;
   requestSubscription: typeof iapRequestSubscription;
 };
@@ -68,8 +68,14 @@ export const useIAP = (): IAP_STATUS => {
   );
 
   const getSubscriptions = useCallback(
-    async ({skus}: {skus: string[]}): Promise<void> => {
-      setSubscriptions(await iapGetSubscriptions({skus}));
+    async ({skus,onResponse}: {skus: string[],onResponse:any}): Promise<void> => {
+      iapGetSubscriptions({skus}).then((res)=>{
+        onResponse("response",res);
+        setSubscriptions(res );
+      }).catch((err)=>{
+       onResponse("error",err);
+      })
+      
     },
     [setSubscriptions],
   );

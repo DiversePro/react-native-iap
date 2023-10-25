@@ -149,6 +149,7 @@ export interface SubscriptionAndroid {
   subscriptionOfferDetails: SubscriptionOfferAndroid[];
 }
 
+
 export interface SubscriptionOfferAndroid {
   basePlanId: string;
   offerId: string | null;

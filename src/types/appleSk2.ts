@@ -146,7 +146,7 @@ export const transactionSk2ToPurchaseMap = ({
   purchasedQuantity,
   originalID,
   verificationResult,
-  appAccountToken
+  appAccountToken,
 }: TransactionSk2): Purchase => {
   const purchase: Purchase = {
     productId: productID,

@@ -57,6 +57,8 @@ const ANDROID_ITEM_TYPE_IAP = ProductType.inapp;
  * STOREKIT2_MODE: Will *only* enable Storekit 2. This disables Storekit 1. This is for apps that
  * have already targeted a min version of 15 for their app.
  */
+
+
 export type STOREKIT_OPTIONS =
   | 'STOREKIT1_MODE'
   | 'STOREKIT_HYBRID_MODE'
@@ -236,6 +238,7 @@ export const getSubscriptions = ({
 }: {
   skus: string[];
 }): Promise<Subscription[]> => {
+  
   if (!skus?.length) {
     return Promise.reject('"skus" is required');
   }
@@ -249,22 +252,21 @@ export const getSubscriptions = ({
           );
         } else {
           items = (await RNIapIos.getItems(skus)) as SubscriptionIOS[];
-        }
 
+        }
         items = items.filter((item: SubscriptionIOS) =>
           skus.includes(item.productId),
         );
 
         return addSubscriptionPlatform(items, SubscriptionPlatform.ios);
       },
-      android: async (): Promise<Subscription[]> => {
+      android: async (): Promise<Subscription[] > => {
         const androidPlatform = getAndroidModuleType();
-
+        try{
         let subscriptions = (await getAndroidModule().getItemsByType(
           ANDROID_ITEM_TYPE_SUBSCRIPTION,
           skus,
         )) as SubscriptionAndroid[] | SubscriptionAmazon[];
-
         switch (androidPlatform) {
           case 'android': {
             const castSubscriptions = subscriptions as SubscriptionAndroid[];
@@ -288,6 +290,11 @@ export const getSubscriptions = ({
               `getSubscriptions received unknown platform ${androidPlatform}. Verify the logic in getAndroidModuleType`,
             );
         }
+        } catch(err){
+         return  Promise.reject(new Error(err))
+        }
+       
+     
       },
     }) || (() => Promise.reject(new Error('Unsupported Platform')))
   )();
@@ -732,7 +739,7 @@ const App = () => {
  */
 export const requestSubscription = (
   request: RequestSubscription,
-): Promise<SubscriptionPurchase | SubscriptionPurchase[] | null | void> =>
+): Promise<any> =>
   (
     Platform.select({
       ios: async () => {
@@ -753,8 +760,9 @@ export const requestSubscription = (
             'You are dangerously allowing react-native-iap to finish your transaction automatically. You should set andDangerouslyFinishTransactionAutomatically to false when calling requestPurchase and call finishTransaction manually when you have delivered the purchased goods to the user. It defaults to true to provide backwards compatibility. Will default to false in version 4.0.0.',
           );
         }
-
+       
         if (isIosStorekit2()) {
+          
           const offer = offerSk2Map(withOffer);
 
           const purchase = transactionSk2ToPurchaseMap(
