@@ -39,7 +39,6 @@ import {
   SubscriptionAndroid,
   SubscriptionIOS,
   SubscriptionPlatform,
-  SubscriptionPurchase,
 } from './types';
 
 export {IapAndroid, IapAmazon, IapIos, IapIosSk2, isIosStorekit2};
@@ -290,7 +289,7 @@ export const getSubscriptions = ({
               `getSubscriptions received unknown platform ${androidPlatform}. Verify the logic in getAndroidModuleType`,
             );
         }
-        } catch(err){
+        } catch(err:any){
          return  Promise.reject(new Error(err))
         }
        
