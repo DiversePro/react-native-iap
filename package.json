@@ -103,7 +103,7 @@
     "monolinter": "1.0.4",
     "pod-install": "0.1.38",
     "prettier": "2.8.8",
-    "react": "17.0.2",
+    "react": "18.0.0",
     "react-native": "0.68.2",
     "react-native-builder-bob": "0.20.4",
     "release-it": "15.10.3",
@@ -113,11 +113,11 @@
     "typescript": "5.0.4"
   },
   "peerDependencies": {
-    "react": ">=16.13.1",
+    "react": ">=18.0.0",
     "react-native": ">=0.65.1"
   },
   "resolutions": {
-    "@types/react": "17.0.59",
+    "@types/react": "18.0.0",
     "@types/react-native": "0.68.2"
   },
   "dependencies": {
